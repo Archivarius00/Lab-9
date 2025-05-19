@@ -1,35 +1,119 @@
-<html>
+<!DOCTYPE html>
+<html lang="ru">
 <head>
-    <title>Best store!</title>
-    <script type="text/javascript" src="/static/update.js"></script>
-    <link href="static/store.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои прочитанные книги</title>
+    <style> 
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #444;
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .book-form {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .clear-btn {
+            background-color: #f44336;
+            margin-left: 10px;
+        }
+        .clear-btn:hover {
+            background-color: #d32f2f;
+        }
+        .book-list {
+            margin-top: 20px;
+        }
+        .book-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .book-author {
+            font-weight: bold;
+        }
+        .book-name {
+            font-style: italic;
+            color: #555;
+        }
+        .book-date {
+            font-size: 0.8em;
+            color: #888;
+        }
+    </style>
 </head>
-
 <body>
-    <h1>Furniture store:</h1>
-    <h3>Add new product:</h3>
-    <form>
-        <div>
-            <input type="text" name="prod_name" id="prod_name">
-            <label for="prod_name">Product name</label>
+    <div class="container">
+        <h1>Мои прочитанные книги</h1>
+        
+        <div class="book-form">
+            <form action="/" method="POST">
+                <div class="form-group">
+                    <label for="author">Автор:</label>
+                    <input type="text" id="author" name="author" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">Название книги:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <button type="submit">Добавить книгу</button>
+                <button type="submit" formaction="/clear" class="clear-btn">Очистить список</button>   <p7>(введите любой текст в оба поля для очистки списка)</p7>   
+            </form>
         </div>
-        <div>
-            <input type="number" name="price" id="price">
-            <label for="price">Price (rub.)</label>
+        
+        <div class="book-list">
+            {% for book in books %}
+                <div class="book-item">
+                    <div class="book-author">{{ book.author }}</div>
+                    <div class="book-name">{{ book.name }}</div>
+                    <div class="book-date">Добавлено: {{ book.date_added.strftime('%d.%m.%Y %H:%M') }}</div>
+                </div>
+            {% endfor %}
         </div>
-        <button onClick="addProduct()">Add</button>
-    </form>
-    <ul>
-        {% for product in products_list %}
-        <li>
-            <div>
-                <div>{{ product['prod_name'] }}</div>
-                <div>{{ product['price'] }} rub.</div>
-                <input value="{{product['id']}}" onChange="updateProd(this)" name="in_stock" type="checkbox" {% if product.in_stock %} checked {% endif %}>
-                <label for="in_stock">In stock</label>
-            </div>
-        </li>
-        {% endfor %}
-    </ul>
+    </div>
 </body>
 </html>
